@@ -1,12 +1,10 @@
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "@ton/crypto";
 import { WalletContractV4, TonClient, fromNano } from "@ton/ton";
-import { readFile } from "fs/promises";
+import { MNEMONIC } from "./env";
 
 async function main() {
-  const mnemonic = await readFile("./wallet-pnemonic.txt", "utf8");
-
-  const key = await mnemonicToWalletKey(mnemonic.split(" "));
+  const key = await mnemonicToWalletKey(MNEMONIC.split(" "));
   const wallet = WalletContractV4.create({
     publicKey: key.publicKey,
     workchain: 0,

@@ -1,2 +1,3 @@
 node_modules
 wallet-nemonic.txt
+.env
