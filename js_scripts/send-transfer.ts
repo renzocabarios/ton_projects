@@ -1,7 +1,7 @@
-import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { Network, getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "@ton/crypto";
 import { TonClient, WalletContractV4, internal } from "@ton/ton";
-import { MNEMONIC } from "./env";
+import { MNEMONIC, TON_NETWORK } from "./env";
 
 async function main() {
   const key = await mnemonicToWalletKey(MNEMONIC.split(" "));
@@ -10,7 +10,7 @@ async function main() {
     workchain: 0,
   });
 
-  const endpoint = await getHttpEndpoint({ network: "testnet" });
+  const endpoint = await getHttpEndpoint({ network: TON_NETWORK as Network });
   const client = new TonClient({ endpoint });
 
   if (!(await client.isContractDeployed(wallet.address))) {
@@ -25,14 +25,13 @@ async function main() {
     messages: [
       internal({
         to: "EQA4V9tF4lY2S_J-sEQR7aUj9IwW-Ou2vJQlCn--2DLOLR5e",
-        value: "0.05", // 0.05 TON
-        body: "Hello", // optional comment
+        value: "0.05",
+        body: "Hello",
         bounce: false,
       }),
     ],
   });
 
-  // wait until confirmed
   let currentSeqno = seqno;
   while (currentSeqno == seqno) {
     console.log("waiting for transaction to confirm...");

@@ -1,7 +1,7 @@
-import { getHttpEndpoint } from "@orbs-network/ton-access";
+import { Network, getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "@ton/crypto";
 import { WalletContractV4, TonClient, fromNano } from "@ton/ton";
-import { MNEMONIC } from "./env";
+import { MNEMONIC, TON_NETWORK } from "./env";
 
 async function main() {
   const key = await mnemonicToWalletKey(MNEMONIC.split(" "));
@@ -10,7 +10,7 @@ async function main() {
     workchain: 0,
   });
   // initialize ton rpc client on testnet
-  const endpoint = await getHttpEndpoint({ network: "testnet" });
+  const endpoint = await getHttpEndpoint({ network: TON_NETWORK as Network });
   const client = new TonClient({ endpoint });
 
   // query balance from chain
