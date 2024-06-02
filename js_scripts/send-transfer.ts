@@ -1,7 +1,7 @@
-import { Network, getHttpEndpoint } from "@orbs-network/ton-access";
 import { mnemonicToWalletKey } from "@ton/crypto";
-import { TonClient, WalletContractV4, internal } from "@ton/ton";
-import { MNEMONIC, TON_NETWORK } from "./env";
+import { WalletContractV4, internal } from "@ton/ton";
+import { MNEMONIC } from "./env";
+import { getClient } from "./config";
 
 async function main() {
   const key = await mnemonicToWalletKey(MNEMONIC.split(" "));
@@ -10,8 +10,7 @@ async function main() {
     workchain: 0,
   });
 
-  const endpoint = await getHttpEndpoint({ network: TON_NETWORK as Network });
-  const client = new TonClient({ endpoint });
+  const client = await getClient();
 
   if (!(await client.isContractDeployed(wallet.address))) {
     return console.log("wallet is not deployed");
